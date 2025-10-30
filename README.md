@@ -30,7 +30,7 @@ A production-quality coffee machine simulation with FastAPI backend and Vue.js f
 
 ### Step 1: Navigate to project directory
 ```bash
-cd coffee-machine
+cd coffee-machine-python-vue
 ```
 
 ### Step 2: Copy environment file (optional)
@@ -72,7 +72,7 @@ npm run dev
 ## Project Structure
 
 ```
-coffee-machine/
+coffee-machine-python-vue/
 ├── backend/          # FastAPI application
 │   ├── app/          # Application code
 │   ├── tests/        # Test files

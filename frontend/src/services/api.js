@@ -36,38 +36,43 @@ export const coffeeAPI = {
   /**
    * Make an espresso
    */
-  makeEspresso: () => apiClient.post('/coffee/espresso'),
+  makeEspresso: () => apiClient.post('/v1/coffee/espresso'),
 
   /**
    * Make a double espresso
    */
-  makeDoubleEspresso: () => apiClient.post('/coffee/double-espresso'),
+  makeDoubleEspresso: () => apiClient.post('/v1/coffee/double-espresso'),
 
   /**
    * Make an americano
    */
-  makeAmericano: () => apiClient.post('/coffee/americano'),
+  makeAmericano: () => apiClient.post('/v1/coffee/americano'),
+
+  /**
+   * Make a ristretto
+   */
+  makeRistretto: () => apiClient.post('/v1/coffee/ristretto'),
 
   /**
    * Get machine status
    */
-  getStatus: () => apiClient.get('/status'),
+  getStatus: () => apiClient.get('/v1/status'),
 
   /**
    * Fill water container
    * @param {number} amount - Amount in ml
    */
-  fillWater: (amount) => apiClient.post('/fill/water', { amount }),
+  fillWater: (amount) => apiClient.post('/v1/fill/water', { amount }),
 
   /**
    * Fill coffee container
    * @param {number} amount - Amount in grams
    */
-  fillCoffee: (amount) => apiClient.post('/fill/coffee', { amount }),
+  fillCoffee: (amount) => apiClient.post('/v1/fill/coffee', { amount }),
 
   /**
    * Reset machine
    */
-  reset: () => apiClient.post('/reset'),
+  reset: () => apiClient.post('/v1/reset'),
 }
 

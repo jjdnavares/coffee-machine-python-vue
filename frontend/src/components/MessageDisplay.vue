@@ -1,19 +1,20 @@
 <template>
   <div class="toast-container">
-    <div
+    <v-alert
       v-for="message in messages"
       :key="message.id"
-      :class="['toast', message.type]"
+      :type="message.type"
+      closable
+      @click:close="removeMessage(message.id)"
+      :timeout="5000"
+      class="mb-2"
     >
-      <span>{{ message.text }}</span>
-      <button @click="removeMessage(message.id)" class="toast-close">×</button>
-    </div>
+      {{ message.text }}
+    </v-alert>
   </div>
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
-
 const props = defineProps({
   messages: {
     type: Array,
@@ -26,25 +27,22 @@ const emit = defineEmits(['remove-message'])
 const removeMessage = (id) => {
   emit('remove-message', id)
 }
-
-// Auto-dismiss messages after 5 seconds
-const autoDismissTimers = new Map()
-
-onMounted(() => {
-  props.messages.forEach(message => {
-    if (!autoDismissTimers.has(message.id)) {
-      const timer = setTimeout(() => {
-        removeMessage(message.id)
-        autoDismissTimers.delete(message.id)
-      }, 5000)
-      autoDismissTimers.set(message.id, timer)
-    }
-  })
-})
-
-onUnmounted(() => {
-  autoDismissTimers.forEach(timer => clearTimeout(timer))
-  autoDismissTimers.clear()
-})
 </script>
 
+<style scoped>
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2000;
+  max-width: 400px;
+}
+
+@media (max-width: 768px) {
+  .toast-container {
+    left: 1rem;
+    right: 1rem;
+    max-width: none;
+  }
+}
+</style>

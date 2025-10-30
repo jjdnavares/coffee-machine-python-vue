@@ -3,7 +3,7 @@
 		"name": "Coffee Machine API",
 		"description": "API collection for the Coffee Machine simulator. This collection includes all endpoints for managing the virtual coffee machine.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "coffee-machine"
+		"_exporter_id": "coffee-machine-python-vue"
 	},
 	"item": [
 		{
