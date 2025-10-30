@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+.pytest_cache/
+htmlcov/
+.coverage
+*.log
+
+# Node
+node_modules/
+dist/
+.DS_Store
+.npm
+.cursor/
+
+# Docker
+.env
+*.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data
+backend/data/*.json
+!backend/data/.gitkeep
+
+# Build
+build/
+*.egg-info/

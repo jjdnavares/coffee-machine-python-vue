@@ -1,0 +1,39 @@
+services:
+  backend:
+    build: ./backend
+    container_name: coffee-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+      - ./backend/data:/app/data
+    environment:
+      - STORAGE_TYPE=json
+      - DATA_PATH=/app/data/machine_state.json
+      - WATER_CAPACITY=2000.0
+      - COFFEE_CAPACITY=500.0
+      - CORS_ORIGINS=http://localhost:5173
+    networks:
+      - coffee-network
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: coffee-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+    networks:
+      - coffee-network
+    restart: unless-stopped
+
+networks:
+  coffee-network:
+    driver: bridge
+
