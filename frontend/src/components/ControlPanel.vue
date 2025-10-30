@@ -1,47 +1,38 @@
 <template>
-  <div class="card">
-    <h2>Make Coffee</h2>
-    <div class="coffee-buttons">
-      <button
-        @click="$emit('make-espresso')"
+  <v-card class="pa-6" elevation="0">
+    <v-card-title class="text-h5 mb-6">Make Coffee</v-card-title>
+    <div class="coffee-grid">
+      <v-card
+        v-for="coffee in coffeeOptions"
+        :key="coffee.id"
+        :class="['coffee-card', { loading: loading && currentAction === coffee.id }]"
+        @click="!loading && $emit(coffee.event)"
         :disabled="loading"
-        class="btn btn-primary coffee-btn"
+        elevation="0"
+        hover
       >
-        <span v-if="loading && currentAction === 'espresso'" class="spinner"></span>
-        <div>
-          <div class="coffee-name">Espresso</div>
-          <div class="coffee-recipe">8g coffee, 24ml water</div>
+        <div class="d-flex flex-column align-center justify-center pa-4 coffee-card-content">
+          <div class="coffee-icon-wrapper" :class="{
+            'espresso-cup': coffee.id === 'espresso',
+            'double-espresso-cup': coffee.id === 'double-espresso',
+            'smaller-cup': coffee.id === 'ristretto', 
+            'larger-cup': coffee.id === 'americano' 
+          }">
+            <span class="coffee-icon">{{ coffee.icon }}</span>
+          </div>
+          <div class="text-body-1 font-weight-medium mt-2 text-center">{{ coffee.name }}</div>
+          <div v-if="loading && currentAction === coffee.id" class="mt-2">
+            <v-progress-circular indeterminate size="24" color="primary"></v-progress-circular>
+          </div>
         </div>
-      </button>
-      
-      <button
-        @click="$emit('make-double-espresso')"
-        :disabled="loading"
-        class="btn btn-primary coffee-btn"
-      >
-        <span v-if="loading && currentAction === 'double-espresso'" class="spinner"></span>
-        <div>
-          <div class="coffee-name">Double Espresso</div>
-          <div class="coffee-recipe">16g coffee, 48ml water</div>
-        </div>
-      </button>
-      
-      <button
-        @click="$emit('make-americano')"
-        :disabled="loading"
-        class="btn btn-primary coffee-btn"
-      >
-        <span v-if="loading && currentAction === 'americano'" class="spinner"></span>
-        <div>
-          <div class="coffee-name">Americano</div>
-          <div class="coffee-recipe">16g coffee, 148ml water</div>
-        </div>
-      </button>
+      </v-card>
     </div>
-  </div>
+  </v-card>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   status: {
     type: Object,
@@ -57,36 +48,137 @@ const props = defineProps({
   }
 })
 
-defineEmits(['make-espresso', 'make-double-espresso', 'make-americano'])
+defineEmits(['make-espresso', 'make-double-espresso', 'make-ristretto', 'make-americano'])
+
+const coffeeOptions = computed(() => [
+  {
+    id: 'espresso',
+    name: 'Espresso',
+    icon: '☕',
+    event: 'make-espresso',
+    description: '8g coffee, 24ml water'
+  },
+  {
+    id: 'double-espresso',
+    name: 'Double Espresso',
+    icon: '☕☕',
+    event: 'make-double-espresso',
+    description: '16g coffee, 48ml water'
+  },
+  {
+    id: 'ristretto',
+    name: 'Ristretto',
+    icon: '☕',
+    event: 'make-ristretto',
+    description: '8g coffee, 16ml water'
+  },
+  {
+    id: 'americano',
+    name: 'Americano',
+    icon: '☕',
+    event: 'make-americano',
+    description: '16g coffee, 148ml water'
+  }
+])
 </script>
 
 <style scoped>
-.coffee-buttons {
+.coffee-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-md);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
 }
 
-.coffee-btn {
-  flex-direction: column;
-  min-height: 100px;
-  padding: var(--spacing-lg);
+.coffee-card {
+  border-radius: 16px !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 160px;
+  background-color: rgba(var(--v-theme-surface), 0.6) !important;
+  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity)) !important;
 }
 
-.coffee-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: var(--spacing-xs);
+.coffee-card:hover:not(:disabled) {
+  transform: translateY(-4px);
+  background-color: rgba(var(--v-theme-surface), 0.8) !important;
+  border-color: rgb(var(--v-theme-primary)) !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
-.coffee-recipe {
-  font-size: 0.875rem;
-  opacity: 0.9;
+.coffee-card:active {
+  transform: translateY(-2px);
 }
 
-h2 {
-  margin-bottom: var(--spacing-lg);
-  color: var(--primary-color);
+.coffee-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.coffee-card.loading {
+  border-color: rgb(var(--v-theme-primary)) !important;
+}
+
+.coffee-card-content {
+  min-height: 160px;
+}
+
+.coffee-icon-wrapper {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.coffee-icon {
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  line-height: 1;
+}
+
+.espresso-cup {
+  font-size: 4rem !important;
+  line-height: 1;
+}
+
+.double-espresso-cup {
+  font-size: 3.5rem !important;
+  line-height: 1;
+}
+
+.smaller-cup {
+  font-size: 3rem !important;
+  line-height: 1;
+}
+
+.larger-cup {
+  font-size: 5rem !important;
+  line-height: 1;
+}
+
+/* Dark mode adjustments */
+.v-theme--dark .coffee-card {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.v-theme--dark .coffee-card:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .coffee-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .coffee-card {
+    min-height: 140px;
+  }
+  
+  .coffee-icon-wrapper {
+    font-size: 3rem;
+  }
 }
 </style>
 

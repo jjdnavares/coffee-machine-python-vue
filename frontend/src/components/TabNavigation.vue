@@ -1,16 +1,28 @@
 <template>
-  <nav class="tab-navigation">
-    <button
-      v-for="tab in tabs"
-      :key="tab.id"
-      @click="$emit('tab-change', tab.id)"
-      :class="['tab-button', { active: activeTab === tab.id }]"
-      :aria-label="tab.label"
+  <div class="tab-navigation-container">
+    <!-- Footer text above navigation -->
+    <div class="footer-text">
+      <span class="text-caption text-on-surface">Built with FastAPI & Vue.js with Vuetify</span>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <v-bottom-navigation
+      :model-value="activeTab"
+      @update:model-value="$emit('tab-change', $event)"
+      color="primary"
+      class="tab-navigation"
     >
-      <span class="tab-icon">{{ tab.icon }}</span>
-      <span class="tab-label">{{ tab.label }}</span>
-    </button>
-  </nav>
+      <v-btn
+        v-for="tab in tabs"
+        :key="tab.id"
+        :value="tab.id"
+        :aria-label="tab.label"
+      >
+        <span class="tab-icon">{{ tab.icon }}</span>
+        <span class="tab-label">{{ tab.label }}</span>
+      </v-btn>
+    </v-bottom-navigation>
+  </div>
 </template>
 
 <script setup>
@@ -31,54 +43,24 @@ const tabs = [
 </script>
 
 <style scoped>
-.tab-navigation {
+.tab-navigation-container {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background: var(--bg-card);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  padding: var(--spacing-sm) var(--spacing-xs);
   z-index: 1000;
-  backdrop-filter: blur(10px);
+  background-color: rgb(var(--v-theme-surface));
+  border-top: 1px solid rgb(var(--v-theme-outline));
 }
 
-.tab-button {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-sm) var(--spacing-xs);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: var(--radius-md);
-  min-height: 60px;
-  gap: var(--spacing-xs);
-}
-
-.tab-button:hover {
-  background: rgba(139, 69, 19, 0.1);
-}
-
-.tab-button.active {
-  color: var(--primary-color);
-  background: rgba(139, 69, 19, 0.15);
-}
-
-.tab-button.active .tab-icon {
-  transform: scale(1.1);
+.footer-text {
+  padding: 8px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
 }
 
 .tab-icon {
   font-size: 1.5rem;
-  transition: transform 0.3s ease;
 }
 
 .tab-label {
@@ -86,11 +68,6 @@ const tabs = [
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-}
-
-/* Ensure content doesn't hide behind nav */
-:global(.page-container) {
-  padding-bottom: 80px; /* Space for bottom nav */
 }
 </style>
 
