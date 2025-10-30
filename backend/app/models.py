@@ -3,12 +3,14 @@ from datetime import datetime
 from enum import Enum
 from typing import Dict
 from pydantic import BaseModel, Field, field_validator
+from app.validators import ValidationHelpers
 
 
 class CoffeeType(str, Enum):
     """Enumeration of available coffee types."""
     ESPRESSO = "espresso"
     DOUBLE_ESPRESSO = "double_espresso"
+    RISTRETTO = "ristretto"
     AMERICANO = "americano"
 
 
@@ -16,6 +18,7 @@ class CoffeeType(str, Enum):
 RECIPES: Dict[CoffeeType, Dict[str, float]] = {
     CoffeeType.ESPRESSO: {"coffee": 8.0, "water": 24.0},
     CoffeeType.DOUBLE_ESPRESSO: {"coffee": 16.0, "water": 48.0},
+    CoffeeType.RISTRETTO: {"coffee": 8.0, "water": 16.0},  # Short shot with less water
     CoffeeType.AMERICANO: {"coffee": 16.0, "water": 148.0},
 }
 
@@ -110,9 +113,11 @@ class FillRequest(BaseModel):
     @field_validator("amount")
     @classmethod
     def validate_amount(cls, v: float) -> float:
-        """Validate that amount is positive."""
-        if v <= 0:
-            raise ValueError("amount must be greater than 0")
+        """Validate that amount is positive and reasonable."""
+        # Use ValidationHelpers for consistent validation
+        ValidationHelpers.validate_positive_number(v, "amount")
+        # Max 10L water or 2kg coffee in single fill
+        ValidationHelpers.validate_reasonable_amount(v, 10000, "amount")
         return v
 
 

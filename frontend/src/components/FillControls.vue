@@ -1,65 +1,77 @@
 <template>
-  <div class="card">
-    <h2>Fill Containers</h2>
+  <v-card class="pa-6">
+    <v-card-title class="text-h5 mb-4">Fill Containers</v-card-title>
     
     <div class="fill-section">
-      <h3>Water Container</h3>
-      <div class="fill-controls">
-        <div class="input-group">
-          <input
-            v-model.number="waterAmount"
-            type="number"
-            min="0"
-            :max="maxWaterFill"
-            step="0.1"
-            class="input"
-            placeholder="Amount in ml"
-            :disabled="loading"
-          />
-          <span class="unit">ml</span>
-        </div>
-        <button
-          @click="handleFillWater"
-          :disabled="!isValidWaterAmount || loading"
-          class="btn btn-success"
-        >
-          Fill Water
-        </button>
-        <div v-if="waterFillWarning" class="warning">
-          {{ waterFillWarning }}
-        </div>
-      </div>
+      <h3 class="text-h6 mb-3">Water Container</h3>
+      <v-text-field
+        v-model.number="waterAmount"
+        type="number"
+        label="Amount"
+        suffix="ml"
+        min="0"
+        :max="maxWaterFill"
+        step="0.1"
+        :disabled="loading"
+        variant="outlined"
+        class="mb-2"
+      ></v-text-field>
+      <v-btn
+        @click="handleFillWater"
+        :disabled="!isValidWaterAmount || loading"
+        color="success"
+        block
+        size="large"
+        class="mb-2"
+      >
+        Fill Water
+      </v-btn>
+      <v-alert
+        v-if="waterFillWarning"
+        type="warning"
+        variant="tonal"
+        density="compact"
+      >
+        {{ waterFillWarning }}
+      </v-alert>
     </div>
     
+    <v-divider class="my-6"></v-divider>
+    
     <div class="fill-section">
-      <h3>Coffee Container</h3>
-      <div class="fill-controls">
-        <div class="input-group">
-          <input
-            v-model.number="coffeeAmount"
-            type="number"
-            min="0"
-            :max="maxCoffeeFill"
-            step="0.1"
-            class="input"
-            placeholder="Amount in grams"
-            :disabled="loading"
-          />
-          <span class="unit">g</span>
-        </div>
-        <button
-          @click="handleFillCoffee"
-          :disabled="!isValidCoffeeAmount || loading"
-          class="btn btn-success"
-        >
-          Fill Coffee
-        </button>
-        <div v-if="coffeeFillWarning" class="warning">
-          {{ coffeeFillWarning }}
-        </div>
-      </div>
+      <h3 class="text-h6 mb-3">Coffee Container</h3>
+      <v-text-field
+        v-model.number="coffeeAmount"
+        type="number"
+        label="Amount"
+        suffix="g"
+        min="0"
+        :max="maxCoffeeFill"
+        step="0.1"
+        :disabled="loading"
+        variant="outlined"
+        class="mb-2"
+      ></v-text-field>
+      <v-btn
+        @click="handleFillCoffee"
+        :disabled="!isValidCoffeeAmount || loading"
+        color="success"
+        block
+        size="large"
+        class="mb-2"
+      >
+        Fill Coffee
+      </v-btn>
+      <v-alert
+        v-if="coffeeFillWarning"
+        type="warning"
+        variant="tonal"
+        density="compact"
+      >
+        {{ coffeeFillWarning }}
+      </v-alert>
     </div>
-  </div>
+  </v-card>
 </template>
 
 <script setup>
@@ -140,49 +152,11 @@ const handleFillCoffee = () => {
 
 <style scoped>
 .fill-section {
-  margin: var(--spacing-lg) 0;
+  margin: 1.5rem 0;
 }
 
 .fill-section:first-child {
   margin-top: 0;
-}
-
-h3 {
-  margin-bottom: var(--spacing-md);
-  color: var(--text-primary);
-}
-
-.fill-controls {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
-.input-group {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.input-group .input {
-  flex: 1;
-}
-
-.unit {
-  font-weight: 600;
-  color: var(--text-secondary);
-  min-width: 30px;
-}
-
-.warning {
-  color: var(--warning-color);
-  font-size: 0.875rem;
-  margin-top: calc(var(--spacing-sm) * -1);
-}
-
-h2 {
-  margin-bottom: var(--spacing-lg);
-  color: var(--primary-color);
 }
 </style>
 
