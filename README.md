@@ -89,43 +89,51 @@ coffee-machine-python-vue/
 └── README.md
 ```
 
-## API Documentation
+## API Versioning
+
+All endpoints are exposed under both `/api/v1/` (recommended) and `/api/` prefixes for backward compatibility.
+For all new integrations and documentation, use `/api/v1/`.
+
+Example:
+- `/api/v1/coffee/espresso`
+- `/api/coffee/espresso`
+(Both work, but `/api/v1/` is future-proof.)
 
 ### Coffee Making Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/coffee/espresso` | Make espresso (8g coffee, 24ml water) |
-| POST | `/api/coffee/double-espresso` | Make double espresso (16g coffee, 48ml water) |
-| POST | `/api/coffee/americano` | Make americano (16g coffee, 148ml water) |
+| Method | Endpoint                         | Description                              |
+|--------|----------------------------------|------------------------------------------|
+| POST   | `/api/v1/coffee/espresso`        | Make espresso                            |
+| POST   | `/api/v1/coffee/double-espresso` | Make double espresso                     |
+| POST   | `/api/v1/coffee/americano`       | Make americano                           |
 
 ### Management Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/status` | Get machine status |
-| POST | `/api/fill/water` | Fill water container |
-| POST | `/api/fill/coffee` | Fill coffee container |
-| GET | `/api/health` | Health check |
-| POST | `/api/reset` | Reset machine |
+| Method | Endpoint                | Description              |
+|--------|-------------------------|--------------------------|
+| GET    | `/api/v1/status`        | Get machine status       |
+| POST   | `/api/v1/fill/water`    | Fill water container     |
+| POST   | `/api/v1/fill/coffee`   | Fill coffee container    |
+| GET    | `/api/v1/health`        | Health check             |
+| POST   | `/api/v1/reset`         | Reset machine            |
 
 ### Example Requests
 
 **Make Espresso:**
 ```bash
-curl -X POST http://localhost:8000/api/coffee/espresso
+curl -X POST http://localhost:8000/api/v1/coffee/espresso
 ```
 
 **Fill Water:**
 ```bash
-curl -X POST http://localhost:8000/api/fill/water \
+curl -X POST http://localhost:8000/api/v1/fill/water \
   -H "Content-Type: application/json" \
   -d '{"amount": 500}'
 ```
 
 **Get Status:**
 ```bash
-curl http://localhost:8000/api/status
+curl http://localhost:8000/api/v1/status
 ```
 
 ## Testing
@@ -179,9 +187,9 @@ MIT
 
 ## Author
 
-Coffee Machine Project
+Jay
 
 ---
 
-**Note:** This is a coding assessment project demonstrating clean architecture, TDD, and modern web development practices.
+**Note:** This is a coding project demonstrating clean architecture, TDD, and modern web development practices.
 
